@@ -13,13 +13,15 @@ jobs:
         run: |
           pip install wheel setuptools
           wget -c https://files.pythonhosted.org/packages/62/b0/caf2dfae8779551f6e1d2bc78668d8f5a2303d21311fdd54345722b68cbc/quickfix-1.15.1.tar.gz -O - | tar -xz
-          cd quickfix-1.15.1
-          python setup.py sdist bdist_wheel
-          cd dist
-          ls
+          mv quickfix-1.15.1/* .
+          rm -r quickfix-1.15.1
+      - name: Build manylinux Python wheel
+        uses: RalfG/python-wheels-manylinux-build@v0.7.1-manylinux2014_x86_64
+        with:
+          python-versions: 'cp311-cp311'
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
           name: dist
           path: |
-            quickfix-1.15.1/dist
+            dist
